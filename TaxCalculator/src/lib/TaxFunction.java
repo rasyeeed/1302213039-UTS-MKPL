@@ -15,16 +15,17 @@ public class TaxFunction {
 	 */
 	
 	
-	 public static int calculateTax(int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, boolean isMarried, int numberOfChildren) {
-		int taxableIncome = calculateTaxableIncome(monthlySalary, otherMonthlyIncome, numberOfMonthWorking, deductible, isMarried, numberOfChildren);
+	 public static int calculateTax(TaxData parameters) {
+		int taxableIncome = calculateTaxableIncome(parameters);
 		int tax = (int) Math.round(0.05 * taxableIncome);
-		return Math.max(tax, 0); // Ensures tax is non-negative
+		return Math.max(tax, 0);
 	}
 	
-	private static int calculateTaxableIncome(int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, boolean isMarried, int numberOfChildren) {
-		int totalMonthlyIncome = (monthlySalary + otherMonthlyIncome) * numberOfMonthWorking;
-		int nonTaxableIncome = calculateNonTaxableIncome(isMarried, numberOfChildren);
-		return totalMonthlyIncome - deductible - nonTaxableIncome;
+	private static int calculateTaxableIncome(TaxData parameters){
+		int totalMonthlyIncome = (parameters.getMonthlySalary() + parameters.getOtherMonthlyIncome()) * parameters.getNumberOfMonthWorking();
+		int nonTaxableIncome = calculateNonTaxableIncome(parameters.isMarried(), parameters.getNumberOfChildren());
+		return totalMonthlyIncome - parameters.getDeductible() - nonTaxableIncome;
+
 	}
 	
 	private static int calculateNonTaxableIncome(boolean isMarried, int numberOfChildren) {
